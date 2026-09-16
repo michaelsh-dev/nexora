@@ -5,7 +5,7 @@ import {
   Navigate,
 } from 'react-router-dom'
 
-import Login from './pages/auth/Login'
+import Login from './pages/auth/login'
 import Dashboard from './pages/dashboard/Dashboard'
 import ProtectedRoute from './components/ProtectedRoute'
 import Register from './pages/auth/Register'
@@ -16,6 +16,10 @@ import Products from './pages/products/Products'
 import Warehouses from './pages/warehouses/Warehouses'
 import Stocks from './pages/stocks/Stocks'
 import StockAdjustments from './pages/stock-adjustments/StockAdjustments'
+import SalesInvoices from './pages/sales/SalesInvoices'
+import SalesReceipts from './pages/sales/SalesReceipts'
+import SalesOrders from './pages/sales/SalesOrders'
+import SalesQuotations from './pages/sales/SalesQuotations'
 
 function App() {
   return (
@@ -72,11 +76,26 @@ function App() {
             element={<Warehouses />}
           />
 
-          <Route path="/stocks" 
-          element={<Stocks />} />
+          <Route path="/stocks"
+            element={<Stocks />} />
 
           <Route path="/stock-adjustments"
-          element={<StockAdjustments />} />
+            element={<StockAdjustments />} />
+
+          <Route
+            path="/sales-receipts"
+            element={<SalesReceipts />}
+          />
+
+          <Route
+            path="/sales-orders"
+            element={<SalesOrders />}
+          />
+
+          <Route path="/sales-invoices" element={<SalesInvoices />} />
+
+          <Route path="/sales-quotations" element={<SalesQuotations />} />
+
         </Route>
 
         {/* Not Found */}
@@ -84,7 +103,10 @@ function App() {
           path="*"
           element={<Navigate to="/login" replace />}
         />
-
+        <Route
+          path="/sales-invoices"
+          element={<SalesInvoices />}
+        />
       </Routes>
     </BrowserRouter>
   )

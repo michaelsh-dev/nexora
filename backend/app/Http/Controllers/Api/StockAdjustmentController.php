@@ -38,7 +38,7 @@ class StockAdjustmentController extends Controller
         }
 
         return response()->json(
-            $query->latest()->get()
+            $query->orderBy('code', 'asc')->get()
         );
     }
 

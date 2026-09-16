@@ -81,9 +81,34 @@ function Sidebar() {
                         text="Pelanggan"
                         href="/customers"
                     />
-                    <SidebarItem icon={<FileText size={18} />} text="Penawaran" />
-                    <SidebarItem icon={<ShoppingCart size={18} />} text="Pesanan Penjualan" />
-                    <SidebarItem icon={<FileText size={18} />} text="Faktur Penjualan" />
+
+                    <SidebarItem
+                        icon={<FileText size={18} />}
+                        text="Penawaran"
+                        href="/sales-quotations"
+                    />
+                    <SidebarItem
+                        icon={<ShoppingCart size={18} />}
+                        text="Pesanan Penjualan"
+                    />
+
+                    <SidebarItem
+                        icon={<FileText size={18} />}
+                        text="Faktur Penjualan"
+                        href="/sales-invoices"
+                    />
+
+                    <SidebarItem
+                        icon={<Wallet size={18} />}
+                        text="Penerimaan Penjualan"
+                        href="/sales-receipts"
+                    />
+
+                    <SidebarItem
+                        icon={<ShoppingCart size={18} />}
+                        text="Pesanan Penjualan"
+                        href="/sales-orders"
+                    />
                 </div>
 
                 {/* Pembelian */}
