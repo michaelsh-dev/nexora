@@ -84,7 +84,7 @@ function Stocks() {
         setForm({
             product_id: stock.product_id,
             warehouse_id: stock.warehouse_id,
-            quantity: stock.quantity,
+            quantity: Number(stock.quantity),
         })
 
         setShowModal(true)
@@ -279,13 +279,12 @@ function Stocks() {
 
                                                 <span
                                                     className={`font-semibold ${Number(stock.quantity) <=
-                                                            Number(stock.product?.minimum_stock || 0)
-                                                            ? 'text-red-600'
-                                                            : 'text-green-600'
+                                                        Number(stock.product?.minimum_stock || 0)
+                                                        ? 'text-red-600'
+                                                        : 'text-green-600'
                                                         }`}
                                                 >
-                                                    {stock.quantity}
-                                                </span>
+                                                    {Number(stock.quantity).toFixed(0)}                                                </span>
 
                                                 <span className="ml-1 text-gray-400">
                                                     {stock.product?.unit}
@@ -323,6 +322,7 @@ function Stocks() {
 
                         </table>
 
+
                     </div>
 
                     {/* Footer */}
@@ -340,6 +340,158 @@ function Stocks() {
                 </div>
 
             </div>
+
+            {/* Modal Tambah / Edit Stok */}
+            {showModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+                    <div className="w-full max-w-lg rounded-2xl bg-white shadow-xl">
+
+                        {/* Header Modal */}
+                        <div className="flex items-center justify-between border-b border-gray-200 px-6 py-5">
+                            <div>
+                                <h2 className="text-lg font-semibold text-gray-900">
+                                    {editingStock ? 'Edit Stok' : 'Tambah Stok'}
+                                </h2>
+
+                                <p className="mt-1 text-sm text-gray-500">
+                                    Kelola stok barang berdasarkan gudang
+                                </p>
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={() => setShowModal(false)}
+                                className="rounded-lg p-2 text-gray-400 hover:bg-gray-100"
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        {/* Form */}
+                        <form
+                            onSubmit={handleSubmit}
+                            className="space-y-5 p-6"
+                        >
+
+                            {/* Barang */}
+                            <div>
+                                <label className="mb-2 block text-sm font-medium text-gray-700">
+                                    Barang
+                                </label>
+
+                                <select
+                                    name="product_id"
+                                    value={form.product_id}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            product_id: e.target.value,
+                                        })
+                                    }
+                                    required
+                                    disabled={!!editingStock}
+                                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500 disabled:bg-gray-100"
+                                >
+                                    <option value="">
+                                        Pilih barang
+                                    </option>
+
+                                    {products.map((product) => (
+                                        <option
+                                            key={product.id}
+                                            value={product.id}
+                                        >
+                                            {product.code} - {product.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* Gudang */}
+                            <div>
+                                <label className="mb-2 block text-sm font-medium text-gray-700">
+                                    Gudang
+                                </label>
+
+                                <select
+                                    name="warehouse_id"
+                                    value={form.warehouse_id}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            warehouse_id: e.target.value,
+                                        })
+                                    }
+                                    required
+                                    disabled={!!editingStock}
+                                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500 disabled:bg-gray-100"
+                                >
+                                    <option value="">
+                                        Pilih gudang
+                                    </option>
+
+                                    {warehouses.map((warehouse) => (
+                                        <option
+                                            key={warehouse.id}
+                                            value={warehouse.id}
+                                        >
+                                            {warehouse.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* Jumlah */}
+                            <div>
+                                <label className="mb-2 block text-sm font-medium text-gray-700">
+                                    Jumlah Stok
+                                </label>
+
+                                <input
+                                    type="number"
+                                    name="quantity"
+                                    value={form.quantity}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            quantity: e.target.value,
+                                        })
+                                    }
+                                    min="0"
+                                    step="1"
+                                    placeholder="10"
+                                    required
+                                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                />
+                            </div>
+
+                            {/* Tombol */}
+                            <div className="flex justify-end gap-3 border-t border-gray-100 pt-5">
+
+                                <button
+                                    type="button"
+                                    onClick={() => setShowModal(false)}
+                                    className="rounded-lg border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50"
+                                >
+                                    Batal
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
+                                >
+                                    {editingStock
+                                        ? 'Simpan Perubahan'
+                                        : 'Simpan Stok'}
+                                </button>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            )}
+
         </DashboardLayout>
     )
 }

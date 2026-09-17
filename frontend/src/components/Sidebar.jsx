@@ -14,6 +14,7 @@ import {
     Building2,
     Tags,
     ClipboardMinus,
+    ClipboardList,
 } from 'lucide-react'
 
 function Sidebar() {
@@ -122,8 +123,27 @@ function Sidebar() {
                         text="Supplier"
                         href="/suppliers"
                     />
-                    <SidebarItem icon={<ShoppingCart size={18} />} text="Pesanan Pembelian" />
-                    <SidebarItem icon={<FileText size={18} />} text="Faktur Pembelian" />
+
+                    <SidebarItem
+                        icon={<ClipboardList size={18} />}
+                        text="Permintaan Pembelian"
+                        href="/purchase-requests"
+                    />
+                    <SidebarItem
+                        icon={<ShoppingCart size={18} />}
+                        text="Pesanan Pembelian"
+                        href="/purchase-orders"
+                    />
+                    <SidebarItem
+                        icon={<FileText size={18} />}
+                        text="Faktur Pembelian"
+                        href="/purchase-invoices"
+                    />
+                    <SidebarItem
+                        icon={<Wallet size={18} />}
+                        text="Pembayaran Pembelian"
+                        href="/purchase-payments"
+                    />
                 </div>
 
                 {/* Persediaan */}

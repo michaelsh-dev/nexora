@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class SalesInvoice extends Model
+class PurchaseInvoice extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'number',
         'date',
-        'customer_id',
+        'supplier_id',
+        'purchase_order_id',
+        'warehouse_id',
         'subtotal',
         'discount',
+        'tax_rate',
         'tax',
         'total',
         'status',
@@ -27,24 +27,34 @@ class SalesInvoice extends Model
         'date' => 'date',
         'subtotal' => 'decimal:2',
         'discount' => 'decimal:2',
+        'tax_rate' => 'decimal:2',
         'tax' => 'decimal:2',
         'total' => 'decimal:2',
     ];
 
-    public function customer(): BelongsTo
+    public function supplier(): BelongsTo
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Supplier::class);
     }
 
-    public function items(): HasMany
+    public function purchaseOrder(): BelongsTo
     {
-        return $this->hasMany(SalesInvoiceItem::class);
+        return $this->belongsTo(PurchaseOrder::class);
     }
 
     public function warehouse(): BelongsTo
     {
-        return $this->belongsTo(
-            Warehouse::class
+        return $this->belongsTo(Warehouse::class);
+    }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(PurchaseInvoiceItem::class);
+    }
+    public function payments(): HasMany
+    {
+        return $this->hasMany(
+            PurchasePayment::class
         );
     }
 }

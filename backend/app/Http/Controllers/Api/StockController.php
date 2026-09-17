@@ -29,7 +29,7 @@ class StockController extends Controller
         }
 
         return response()->json(
-            $query->orderBy('code', 'asc')->get()
+            $query->orderBy('id', 'asc')->get()
         );
     }
 

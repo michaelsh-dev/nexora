@@ -421,8 +421,7 @@ function StockAdjustments() {
                         </td>
 
                         <td className="px-6 py-4 text-gray-700">
-                          {adjustment.quantity_before}
-                        </td>
+                          {Number(adjustment.quantity_before).toFixed(0)}                        </td>
 
                         <td className="px-6 py-4">
 
@@ -434,14 +433,14 @@ function StockAdjustments() {
                             }
                           >
                             {adjustmentValue > 0
-                              ? `+${adjustment.adjustment_quantity}`
-                              : adjustment.adjustment_quantity}
+                              ? `+${Number(adjustment.adjustment_quantity).toFixed(0)}`
+                              : Number(adjustment.adjustment_quantity).toFixed(0)}
                           </span>
 
                         </td>
 
                         <td className="px-6 py-4 font-semibold text-gray-800">
-                          {adjustment.quantity_after}
+                          {Number(adjustment.quantity_after).toFixed(0)}
                         </td>
 
                         <td className="max-w-xs px-6 py-4 text-gray-500">

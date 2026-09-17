@@ -13,6 +13,10 @@ use App\Http\Controllers\Api\SalesInvoiceController;
 use App\Http\Controllers\Api\SalesReceiptController;
 use App\Http\Controllers\Api\SalesOrderController;
 use App\Http\Controllers\Api\SalesQuotationController;
+use App\Http\Controllers\Api\PurchaseRequestController;
+use App\Http\Controllers\Api\PurchaseOrderController;
+use App\Http\Controllers\Api\PurchaseInvoiceController;
+use App\Http\Controllers\Api\PurchasePaymentController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -30,6 +34,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/sales-receipts', SalesReceiptController::class);
     Route::apiResource('/sales-orders',SalesOrderController::class);
     Route::apiResource('/sales-quotations', SalesQuotationController::class);
+    Route::apiResource('/purchase-requests', PurchaseRequestController::class);
+    Route::apiResource('/purchase-orders', PurchaseOrderController::class);
+    Route::apiResource('/purchase-invoices', PurchaseInvoiceController::class);
+    Route::apiResource('/purchase-payments', PurchasePaymentController::class);
     
 });
 

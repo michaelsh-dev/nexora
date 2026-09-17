@@ -20,6 +20,10 @@ import SalesInvoices from './pages/sales/SalesInvoices'
 import SalesReceipts from './pages/sales/SalesReceipts'
 import SalesOrders from './pages/sales/SalesOrders'
 import SalesQuotations from './pages/sales/SalesQuotations'
+import PurchaseRequests from './pages/purchases/PurchaseRequests'
+import PurchaseOrders from './pages/purchases/PurchaseOrders'
+import PurchaseInvoices from './pages/purchases/PurchaseInvoices'
+import PurchasePayments from './pages/purchases/PurchasePayments'
 
 function App() {
   return (
@@ -95,6 +99,24 @@ function App() {
           <Route path="/sales-invoices" element={<SalesInvoices />} />
 
           <Route path="/sales-quotations" element={<SalesQuotations />} />
+
+          <Route
+            path="/purchase-requests"
+            element={<PurchaseRequests />}
+          />
+
+          <Route
+            path="/purchase-orders"
+            element={<PurchaseOrders />}
+          />
+          <Route
+            path="/purchase-invoices"
+            element={<PurchaseInvoices />}
+          />
+          <Route
+            path="/purchase-payments"
+            element={<PurchasePayments />}
+          />
 
         </Route>
 

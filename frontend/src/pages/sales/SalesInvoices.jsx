@@ -9,6 +9,7 @@ import {
     Calendar,
     User,
     Package,
+
 } from 'lucide-react'
 
 import DashboardLayout from '../../layouts/DashboardLayout'
@@ -24,10 +25,12 @@ function SalesInvoices() {
 
     const [showModal, setShowModal] = useState(false)
     const [editingInvoice, setEditingInvoice] = useState(null)
+    const [warehouses, setWarehouses] = useState([])
 
     const [form, setForm] = useState({
         date: new Date().toISOString().split('T')[0],
         customer_id: '',
+        warehouse_id: '',
         discount: 0,
         tax: 0,
         tax_rate: 0,
@@ -47,6 +50,7 @@ function SalesInvoices() {
         fetchInvoices()
         fetchCustomers()
         fetchProducts()
+        fetchWarehouses()
     }, [])
 
     const fetchInvoices = async () => {
@@ -79,12 +83,22 @@ function SalesInvoices() {
         }
     }
 
+    const fetchWarehouses = async () => {
+        try {
+            const response = await api.get('/warehouses')
+            setWarehouses(response.data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const openCreateModal = () => {
         setEditingInvoice(null)
 
         setForm({
             date: new Date().toISOString().split('T')[0],
             customer_id: '',
+            warehouse_id: '',
             discount: 0,
             tax: 0,
             tax_rate: 0,
@@ -114,6 +128,7 @@ function SalesInvoices() {
         setForm({
             date: invoice.date?.split('T')[0] || invoice.date,
             customer_id: invoice.customer_id,
+            warehouse_id: invoice.warehouse_id || '',
             discount: Number(invoice.discount),
             tax: Number(invoice.tax),
             tax_rate: Number(taxRate),
@@ -282,6 +297,7 @@ function SalesInvoices() {
         const payload = {
             date: form.date,
             customer_id: form.customer_id,
+            warehouse_id: Number(form.warehouse_id),
             discount: discount,
             tax: tax,
             status: form.status,
@@ -578,7 +594,7 @@ function SalesInvoices() {
                         >
                             <div className="space-y-7 p-7">
 
-                                {/* Customer + Date */}
+                                {/* Customer + Warehouse + Date */}
                                 <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
 
                                     <div className="md:col-span-2">
@@ -617,6 +633,37 @@ function SalesInvoices() {
                                                 ))}
                                             </select>
                                         </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label className="mb-2 block text-sm font-semibold text-slate-700">
+                                            Gudang
+                                        </label>
+
+                                        <select
+                                            required
+                                            value={form.warehouse_id}
+                                            onChange={(e) =>
+                                                setForm({
+                                                    ...form,
+                                                    warehouse_id: e.target.value,
+                                                })
+                                            }
+                                            className="w-full appearance-none rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500"
+                                        >
+                                            <option value="">
+                                                Pilih gudang
+                                            </option>
+
+                                            {warehouses.map((warehouse) => (
+                                                <option
+                                                    key={warehouse.id}
+                                                    value={warehouse.id}
+                                                >
+                                                    {warehouse.code} - {warehouse.name}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
 
                                     <div>

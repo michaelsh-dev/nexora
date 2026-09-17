@@ -18,6 +18,7 @@ class SalesInvoiceController extends Controller
         $invoices = SalesInvoice::with([
             'customer',
             'items.product',
+            'warehouse',
         ])
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
@@ -50,6 +51,10 @@ class SalesInvoiceController extends Controller
             'items.*.quantity' => 'required|numeric|min:0.01',
             'items.*.price' => 'required|numeric|min:0',
             'items.*.discount' => 'nullable|numeric|min:0',
+            'warehouse_id' => [
+                'required',
+                'exists:warehouses,id'
+            ],
         ]);
 
         return DB::transaction(function () use ($validated) {
@@ -89,6 +94,8 @@ class SalesInvoiceController extends Controller
                 'total' => $total,
                 'status' => $validated['status'] ?? 'unpaid',
                 'notes' => $validated['notes'] ?? null,
+                'warehouse_id' =>
+                $validated['warehouse_id'],
             ]);
 
             foreach ($validated['items'] as $item) {
@@ -112,6 +119,7 @@ class SalesInvoiceController extends Controller
                 if (($validated['status'] ?? 'unpaid') !== 'draft') {
                     $this->reduceStock(
                         $item['product_id'],
+                        $validated['warehouse_id'],
                         $item['quantity']
                     );
                 }
@@ -136,6 +144,10 @@ class SalesInvoiceController extends Controller
         $validated = $request->validate([
             'date' => 'required|date',
             'customer_id' => 'required|exists:customers,id',
+            'warehouse_id' => [
+                'required',
+                'exists:warehouses,id'
+            ],
             'discount' => 'nullable|numeric|min:0',
             'tax' => 'nullable|numeric|min:0',
             'status' => 'required|in:draft,unpaid,paid,cancelled',
@@ -147,6 +159,7 @@ class SalesInvoiceController extends Controller
             'items.*.quantity' => 'required|numeric|min:0.01',
             'items.*.price' => 'required|numeric|min:0',
             'items.*.discount' => 'nullable|numeric|min:0',
+
         ]);
 
         return DB::transaction(function () use ($validated, $salesInvoice) {
@@ -162,6 +175,7 @@ class SalesInvoiceController extends Controller
                 foreach ($salesInvoice->items as $oldItem) {
                     $this->restoreStock(
                         $oldItem->product_id,
+                        $salesInvoice->warehouse_id ?? $validated['warehouse_id'],
                         $oldItem->quantity
                     );
                 }
@@ -201,6 +215,8 @@ class SalesInvoiceController extends Controller
                 'total' => $total,
                 'status' => $validated['status'],
                 'notes' => $validated['notes'] ?? null,
+                'warehouse_id' =>
+                $validated['warehouse_id'],
             ]);
 
             $salesInvoice->items()->delete();
@@ -228,6 +244,7 @@ class SalesInvoiceController extends Controller
                 ) {
                     $this->reduceStock(
                         $item['product_id'],
+                        $validated['warehouse_id'],
                         $item['quantity']
                     );
                 }
@@ -250,6 +267,7 @@ class SalesInvoiceController extends Controller
                 foreach ($salesInvoice->items as $item) {
                     $this->restoreStock(
                         $item->product_id,
+                        $salesInvoice->warehouse_id,
                         $item->quantity
                     );
                 }
@@ -274,21 +292,19 @@ class SalesInvoiceController extends Controller
         return 'INV-' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
     }
 
-    private function reduceStock(int $productId, float $quantity): void
+    private function reduceStock(int $productId, int $warehouseId, float $quantity): void
     {
         /*
-         * Untuk sementara penjualan mengurangi stok
-         * dari stok yang tersedia.
-         *
-         * Karena invoice belum memilih gudang,
-         * kita gunakan stok pertama yang tersedia.
-         */
+        * Kurangi stok dari gudang yang dipilih
+        * pada invoice.
+        */
         $stock = Stock::where('product_id', $productId)
+            ->where('warehouse_id', $warehouseId)
             ->lockForUpdate()
             ->first();
 
         if (!$stock) {
-            abort(422, 'Stok produk tidak ditemukan.');
+            abort(422, 'Stok produk tidak ditemukan di gudang yang dipilih.');
         }
 
         if ((float) $stock->quantity < $quantity) {
@@ -301,9 +317,13 @@ class SalesInvoiceController extends Controller
         $stock->decrement('quantity', $quantity);
     }
 
-    private function restoreStock(int $productId, float $quantity): void
-    {
+    private function restoreStock(
+        int $productId,
+        int $warehouseId,
+        float $quantity
+    ): void {
         $stock = Stock::where('product_id', $productId)
+            ->where('warehouse_id', $warehouseId)
             ->lockForUpdate()
             ->first();
 
