@@ -27,7 +27,6 @@ function Products() {
     unit: 'Unit',
     purchase_price: '',
     selling_price: '',
-    minimum_stock: '0',
     status: 'active',
     description: '',
   })
@@ -78,7 +77,6 @@ function Products() {
       unit: 'Unit',
       purchase_price: '',
       selling_price: '',
-      minimum_stock: '0',
       status: 'active',
       description: '',
     })
@@ -97,7 +95,6 @@ function Products() {
       unit: product.unit,
       purchase_price: product.purchase_price,
       selling_price: product.selling_price,
-      minimum_stock: product.minimum_stock,
       status: product.status,
       description: product.description || '',
     })
@@ -245,7 +242,6 @@ function Products() {
                   <th className="px-6 py-4">Kategori</th>
                   <th className="px-6 py-4">Harga Beli</th>
                   <th className="px-6 py-4">Harga Jual</th>
-                  <th className="px-6 py-4">Min. Stok</th>
                   <th className="px-6 py-4">Status</th>
                   <th className="px-6 py-4 text-right">Aksi</th>
                 </tr>
@@ -256,13 +252,13 @@ function Products() {
 
                 {loading ? (
                   <tr>
-                    <td colSpan="8" className="px-6 py-10 text-center text-gray-500">
+                    <td colSpan="7" className="px-6 py-10 text-center text-gray-500">
                       Memuat data...
                     </td>
                   </tr>
                 ) : products.length === 0 ? (
                   <tr>
-                    <td colSpan="8" className="px-6 py-12 text-center">
+                    <td colSpan="7" className="px-6 py-12 text-center">
                       <Package size={35} className="mx-auto text-gray-300" />
 
                       <p className="mt-3 font-medium text-gray-600">
@@ -302,10 +298,6 @@ function Products() {
 
                       <td className="px-6 py-4 font-medium text-gray-800">
                         {formatRupiah(product.selling_price)}
-                      </td>
-
-                      <td className="px-6 py-4 text-gray-600">
-                        {product.minimum_stock} {product.unit}
                       </td>
 
                       <td className="px-6 py-4">
@@ -478,34 +470,20 @@ function Products() {
 
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Status
+                </label>
 
-                <Input
-                  label="Minimum Stok"
-                  name="minimum_stock"
-                  type="number"
-                  value={form.minimum_stock}
+                <select
+                  name="status"
+                  value={form.status}
                   onChange={handleChange}
-                  placeholder="5"
-                  required
-                />
-
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-700">
-                    Status
-                  </label>
-
-                  <select
-                    name="status"
-                    value={form.status}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500"
-                  >
-                    <option value="active">Aktif</option>
-                    <option value="inactive">Tidak Aktif</option>
-                  </select>
-                </div>
-
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500"
+                >
+                  <option value="active">Aktif</option>
+                  <option value="inactive">Tidak Aktif</option>
+                </select>
               </div>
 
               <div>

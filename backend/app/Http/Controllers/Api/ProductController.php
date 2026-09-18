@@ -39,7 +39,6 @@ class ProductController extends Controller
             'unit' => 'required|string|max:50',
             'purchase_price' => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
-            'minimum_stock' => 'required|integer|min:0',
             'status' => [
                 'required',
                 Rule::in(['active', 'inactive']),
@@ -77,7 +76,6 @@ class ProductController extends Controller
             'unit' => 'required|string|max:50',
             'purchase_price' => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
-            'minimum_stock' => 'required|integer|min:0',
             'status' => [
                 'required',
                 Rule::in(['active', 'inactive']),

@@ -278,40 +278,51 @@ function Stocks() {
                                             <td className="px-6 py-4">
 
                                                 <span
-                                                    className={`font-semibold ${Number(stock.quantity) <=
-                                                        Number(stock.product?.minimum_stock || 0)
+                                                    className={`font-semibold ${Number(stock.quantity) === 0
                                                         ? 'text-red-600'
-                                                        : 'text-green-600'
+                                                        : Number(stock.quantity) <= 5
+                                                            ? 'text-orange-600'
+                                                            : 'text-green-600'
                                                         }`}
                                                 >
-                                                    {Number(stock.quantity).toFixed(0)}                                                </span>
-
-                                                <span className="ml-1 text-gray-400">
-                                                    {stock.product?.unit}
+                                                    {Number(stock.quantity).toFixed(0)}
                                                 </span>
-
                                             </td>
 
                                             <td className="px-6 py-4">
-
-                                                <div className="flex justify-end gap-2">
-
-                                                    <button
-                                                        onClick={() => openEditModal(stock)}
-                                                        className="rounded-lg p-2 text-gray-500 hover:bg-blue-50 hover:text-blue-600"
+                                                <div>
+                                                    <span
+                                                        className={`font-semibold ${Number(stock.quantity) === 0
+                                                                ? 'text-red-600'
+                                                                : Number(stock.quantity) <= 5
+                                                                    ? 'text-orange-600'
+                                                                    : 'text-green-600'
+                                                            }`}
                                                     >
-                                                        <Pencil size={17} />
-                                                    </button>
+                                                        {Number(stock.quantity).toFixed(0)}
+                                                    </span>
 
-                                                    <button
-                                                        onClick={() => handleDelete(stock.id)}
-                                                        className="rounded-lg p-2 text-gray-500 hover:bg-red-50 hover:text-red-600"
-                                                    >
-                                                        <Trash2 size={17} />
-                                                    </button>
+                                                    <span className="ml-1 text-gray-400">
+                                                        {stock.product?.unit}
+                                                    </span>
 
+                                                    <div className="mt-1">
+                                                        <span
+                                                            className={`text-xs font-medium ${Number(stock.quantity) === 0
+                                                                    ? 'text-red-600'
+                                                                    : Number(stock.quantity) <= 5
+                                                                        ? 'text-orange-600'
+                                                                        : 'text-green-600'
+                                                                }`} 
+                                                        >
+                                                            {Number(stock.quantity) === 0
+                                                                ? 'Habis'
+                                                                : Number(stock.quantity) <= 5
+                                                                    ? 'Stok Menipis'
+                                                                    : 'Normal'}
+                                                        </span>
+                                                    </div>
                                                 </div>
-
                                             </td>
 
                                         </tr>
