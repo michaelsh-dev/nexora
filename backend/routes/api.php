@@ -17,6 +17,10 @@ use App\Http\Controllers\Api\PurchaseRequestController;
 use App\Http\Controllers\Api\PurchaseOrderController;
 use App\Http\Controllers\Api\PurchaseInvoiceController;
 use App\Http\Controllers\Api\PurchasePaymentController;
+use App\Http\Controllers\Api\CashBankController;
+use App\Http\Controllers\Api\ReceiptController;
+use App\Http\Controllers\Api\ExpenseController;
+use App\Http\Controllers\CompanySettingController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -32,13 +36,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/stock-adjustments', StockAdjustmentController::class);
     Route::apiResource('/sales-invoices', SalesInvoiceController::class);
     Route::apiResource('/sales-receipts', SalesReceiptController::class);
-    Route::apiResource('/sales-orders',SalesOrderController::class);
+    Route::apiResource('/sales-orders', SalesOrderController::class);
     Route::apiResource('/sales-quotations', SalesQuotationController::class);
     Route::apiResource('/purchase-requests', PurchaseRequestController::class);
     Route::apiResource('/purchase-orders', PurchaseOrderController::class);
     Route::apiResource('/purchase-invoices', PurchaseInvoiceController::class);
     Route::apiResource('/purchase-payments', PurchasePaymentController::class);
-    
+    Route::apiResource('/cash-banks', CashBankController::class);
+    Route::apiResource('/receipts', ReceiptController::class);
+    Route::apiResource('/expenses', ExpenseController::class);
+    Route::get('/company-settings', [
+        CompanySettingController::class,
+        'show'
+    ]);
+    Route::put('/company-settings', [
+        CompanySettingController::class,
+        'update'
+    ]);
 });
 
 Route::get('/health', function () {

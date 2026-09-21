@@ -105,10 +105,10 @@ function PurchasePayments() {
 
   const remaining = selectedInvoice
     ? Math.max(
-        Number(selectedInvoice.total || 0) -
-          getPaid(selectedInvoice),
-        0
-      )
+      Number(selectedInvoice.total || 0) -
+      getPaid(selectedInvoice),
+      0
+    )
     : 0
 
   const openCreate = () => {
@@ -158,9 +158,9 @@ function PurchasePayments() {
 
     const invoiceRemaining = invoice
       ? Math.max(
-          Number(invoice.total || 0) - paid,
-          0
-        )
+        Number(invoice.total || 0) - paid,
+        0
+      )
       : 0
 
     setForm((prev) => ({
@@ -216,7 +216,7 @@ function PurchasePayments() {
 
       alert(
         error.response?.data?.message ||
-          'Gagal menyimpan pembayaran.'
+        'Gagal menyimpan pembayaran.'
       )
     }
   }
@@ -240,7 +240,7 @@ function PurchasePayments() {
       console.error(error)
       alert(
         error.response?.data?.message ||
-          'Gagal menghapus pembayaran.'
+        'Gagal menghapus pembayaran.'
       )
     }
   }
@@ -376,7 +376,7 @@ function PurchasePayments() {
                         <td className="px-5 py-4">
                           {
                             paymentLabels[
-                              payment.payment_method
+                            payment.payment_method
                             ]
                           }
                         </td>
@@ -495,10 +495,10 @@ function PurchasePayments() {
                       (invoice) =>
                         ![
                           'draft',
+                          'paid',
                           'cancelled',
-                        ].includes(
-                          invoice.status
-                        )
+                        ].includes(invoice.status) ||
+                        invoice.id === form.purchase_invoice_id
                     )
                     .map((invoice) => (
                       <option

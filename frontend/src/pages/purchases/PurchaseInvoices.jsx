@@ -234,6 +234,16 @@ function PurchaseInvoices() {
   }
 
   const loadPurchaseOrder = (orderId) => {
+    if (!orderId) {
+      setForm((prev) => ({
+        ...prev,
+        purchase_order_id: '',
+        items: [{ ...emptyItem }],
+      }))
+
+      return
+    }
+
     const order = purchaseOrders.find(
       (item) =>
         String(item.id) === String(orderId)
@@ -343,7 +353,7 @@ function PurchaseInvoices() {
 
       alert(
         error.response?.data?.message ||
-          'Gagal menghapus data.'
+        'Gagal menghapus data.'
       )
     }
   }

@@ -91,6 +91,7 @@ function Sidebar() {
                     <SidebarItem
                         icon={<ShoppingCart size={18} />}
                         text="Pesanan Penjualan"
+                        href="/sales-orders"
                     />
 
                     <SidebarItem
@@ -105,11 +106,6 @@ function Sidebar() {
                         href="/sales-receipts"
                     />
 
-                    <SidebarItem
-                        icon={<ShoppingCart size={18} />}
-                        text="Pesanan Penjualan"
-                        href="/sales-orders"
-                    />
                 </div>
 
                 {/* Pembelian */}
@@ -189,9 +185,12 @@ function Sidebar() {
                         Keuangan
                     </p>
 
-                    <SidebarItem icon={<Wallet size={18} />} text="Kas & Bank" />
-                    <SidebarItem icon={<Wallet size={18} />} text="Penerimaan" />
-                    <SidebarItem icon={<Wallet size={18} />} text="Pengeluaran" />
+                    <SidebarItem icon={<Wallet size={18} />} text="Kas & Bank" href="/cash-banks" />
+                    <SidebarItem
+                        icon={<Wallet size={18} />}
+                        text="Penerimaan"
+                        href="/receipts" />
+                    <SidebarItem icon={<Wallet size={18} />} text="Pengeluaran" href="/expenses" />
                 </div>
 
                 {/* Laporan */}
@@ -200,9 +199,21 @@ function Sidebar() {
                         Laporan
                     </p>
 
-                    <SidebarItem icon={<BarChart3 size={18} />} text="Laporan Penjualan" />
-                    <SidebarItem icon={<BarChart3 size={18} />} text="Laporan Pembelian" />
-                    <SidebarItem icon={<BarChart3 size={18} />} text="Laba Rugi" />
+                    <SidebarItem
+                        icon={<BarChart3 size={18} />}
+                        text="Laporan Penjualan"
+                        href="/reports/sales"
+                    />
+                    <SidebarItem
+                        icon={<BarChart3 size={18} />}
+                        text="Laporan Pembelian"
+                        href="/reports/purchases"
+                    />
+                    <SidebarItem
+                        icon={<BarChart3 size={18} />}
+                        text="Laba Rugi"
+                        href="/reports/profit-loss"
+                    />
                 </div>
 
                 {/* Pengaturan */}
@@ -211,7 +222,11 @@ function Sidebar() {
                         Pengaturan
                     </p>
 
-                    <SidebarItem icon={<Settings size={18} />} text="Pengaturan" />
+                    <SidebarItem
+                        icon={<Settings size={18} />}
+                        text="Pengaturan"
+                        href="/settings"
+                    />
                 </div>
 
             </nav>

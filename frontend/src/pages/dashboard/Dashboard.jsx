@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import api from '../../services/api'
 import {
     TrendingUp,
     ShoppingBag,
@@ -10,6 +13,31 @@ import {
 import DashboardLayout from '../../layouts/DashboardLayout'
 
 function Dashboard() {
+    const navigate = useNavigate()
+    const [lowStocks, setLowStocks] = useState([])
+
+    useEffect(() => {
+        fetchLowStocks()
+    }, [])
+
+    const fetchLowStocks = async () => {
+        try {
+            const response = await api.get('/stocks')
+
+            const data = response.data
+                .filter((stock) => {
+                    const quantity = Number(stock.quantity)
+
+                    return quantity > 0 && quantity <= 5
+                })
+                .slice(0, 4)
+
+            setLowStocks(data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     return (
         <DashboardLayout>
 
@@ -121,32 +149,29 @@ function Dashboard() {
 
                         <div className="mt-5 space-y-3">
 
-                            <StockItem
-                                name="Lenovo LOQ 15"
-                                stock="5"
-                            />
-
-                            <StockItem
-                                name="ASUS TUF Gaming A15"
-                                stock="7"
-                            />
-
-                            <StockItem
-                                name="Acer Nitro V 15"
-                                stock="8"
-                            />
-
-                            <StockItem
-                                name="HP Victus 15"
-                                stock="4"
-                            />
+                            {lowStocks.length === 0 ? (
+                                <p className="py-6 text-center text-sm text-gray-400">
+                                    Tidak ada stok menipis
+                                </p>
+                            ) : (
+                                lowStocks.map((stock) => (
+                                    <StockItem
+                                        key={stock.id}
+                                        name={stock.product?.name || '-'}
+                                        stock={Number(stock.quantity).toFixed(0)}
+                                    />
+                                ))
+                            )}
 
                         </div>
 
-                        <button className="mt-6 w-full rounded-lg border border-gray-200 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        <button
+                            onClick={() => navigate('/stocks')}
+                            className="mt-6 w-full rounded-lg border border-gray-200 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        >
                             Lihat Semua Stok
                         </button>
-
+                            
                     </div>
 
                 </div>
@@ -294,25 +319,25 @@ function ChartBar({ height, label, value }) {
 }
 
 function StockItem({ name, stock }) {
-  return (
-    <div className="flex items-center justify-between py-1">
+    return (
+        <div className="flex items-center justify-between py-1">
 
-      <div className="min-w-0">
-        <p className="truncate text-sm font-medium text-gray-800">
-          {name}
-        </p>
+            <div className="min-w-0">
+                <p className="truncate text-sm font-medium text-gray-800">
+                    {name}
+                </p>
 
-        <p className="mt-1 text-xs text-gray-500">
-          Stok tersisa
-        </p>
-      </div>
+                <p className="mt-1 text-xs text-gray-500">
+                    Stok tersisa
+                </p>
+            </div>
 
-      <span className="ml-4 shrink-0 rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-600">
-        {stock} unit
-      </span>
+            <span className="ml-4 shrink-0 rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-600">
+                {stock} unit
+            </span>
 
-    </div>
-  )
+        </div>
+    )
 }
 
 function Transaction({

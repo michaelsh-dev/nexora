@@ -24,6 +24,13 @@ import PurchaseRequests from './pages/purchases/PurchaseRequests'
 import PurchaseOrders from './pages/purchases/PurchaseOrders'
 import PurchaseInvoices from './pages/purchases/PurchaseInvoices'
 import PurchasePayments from './pages/purchases/PurchasePayments'
+import CashBanks from './pages/finance/CashBanks'
+import Receipts from './pages/finance/Receipts'
+import Expenses from './pages/finance/Expenses'
+import SalesReport from './pages/reports/SalesReport'
+import PurchaseReport from './pages/reports/PurchaseReport'
+import ProfitLossReport from './pages/reports/ProfitLossReport'
+import Settings from './pages/settings/Settings'
 
 function App() {
   return (
@@ -116,6 +123,41 @@ function App() {
           <Route
             path="/purchase-payments"
             element={<PurchasePayments />}
+          />
+
+          <Route
+            path="/cash-banks"
+            element={<CashBanks />}
+          />
+
+          <Route
+            path="/receipts"
+            element={<Receipts />}
+          />
+
+          <Route
+            path="/expenses"
+            element={<Expenses />}
+          />
+
+          <Route
+            path="/reports/sales"
+            element={<SalesReport />}
+          />
+
+          <Route
+            path="/reports/purchases"
+            element={<PurchaseReport />}
+          />
+
+          <Route
+            path="/reports/profit-loss"
+            element={<ProfitLossReport />}
+          />
+
+          <Route
+            path="/settings"
+            element={<Settings />}
           />
 
         </Route>
